@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Tailwind CSS Integration -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title th:text="${country.official}">Country Details</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .country-detail {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto my-8">
+  <a href="/" class="inline-block mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Home</a>
+  <div class="country-detail">
+    <h1 class="text-4xl font-bold mb-4" th:text="${country.official}">Official Country Name</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <p><strong>Common Name:</strong> <span th:text="${country.common} ?: 'Unavailable'"></span></p>
+      <p><strong>Independence:</strong> <span th:text="${country.independent} ? 'Yes' : 'No'"></span></p>
+      <p><strong>UN Member:</strong> <span th:text="${country.unMember} ? 'Yes' : 'No'"></span></p>
+      <p><strong>Region:</strong> <span th:text="${country.region} ?: 'Unavailable'"></span></p>
+      <p><strong>Subregion:</strong> <span th:text="${country.subregion} ?: 'Unavailable'"></span></p>
+      <p><strong>Landlocked:</strong> <span th:text="${country.landlocked} ? 'Yes' : 'No'"></span></p>
+      <p><strong>Area:</strong> <span th:text="${country.area} ?: 'Unavailable'"></span> km<sup>2</sup></p>
+      <p><strong>Population:</strong> <span th:text="${country.population} ?: 'Unavailable'"></span></p>
+
+      <div>
+        <h3 class="font-semibold">Currencies</h3>
+        <ul th:if="${country.currencies}">
+          <li th:each="currency : ${country.currencies}">
+            <span th:text="${currency.name} ?: 'Unavailable'">Currency Name</span>
+            (<span th:text="${currency.symbol} ?: 'Unavailable'">Currency Symbol</span>)
+          </li>
+        </ul>
+        <p th:if="${country.currencies == null}">No currencies</p>
+      </div>
+
+      <div>
+        <h3 th:if="${country.capitals?.size() == 1}" class="font-semibold">Capital</h3>
+        <h3 th:if="${country.capitals?.size() > 1}" class="font-semibold">Capitals</h3>
+        <ul th:if="${country.capitals}">
+          <li th:each="capital : ${country.capitals}" th:text="${capital.name} ?: 'Unavailable'">Capital Name</li>
+        </ul>
+        <p th:if="${country.capitals == null}">No capitals</p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold">Flag</h3>
+        <img th:src="${country.flags?.png}" th:alt="${country.flags?.alt ?: 'No flag available'}" class="max-w-full h-auto">
+        <p th:text="${country.flags?.alt ?: 'No description available'}" class="mt-2 text-sm text-gray-600">Flag Description</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
